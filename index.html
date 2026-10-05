@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+  <title>هدية رقمية خاصة لـ شوشو 🎂 | كل سنة وإنتي طيبة</title>
+  <meta name="description" content="موقع هدية رقمية تفاعلي وخاص للاحتفال بأحلى أخت وذكرياتنا سوا وعيد ميلادها!">
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎁</text></svg>">
+  
+  <!-- Google Fonts: Cairo & Tajawal for Arabic Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
+
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-warm">
+
+  <!-- Canvas for Confetti & Celebration Effects -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <!-- Ambient Glow Elements -->
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+  <div class="ambient-glow glow-3"></div>
+
+  <!-- ========================================================================= -->
+  <!-- 1. شاشة الظرف التفاعلي (THE ENVELOPE LANDING SCREEN) -->
+  <!-- ========================================================================= -->
+  <section id="landing-screen" class="view-screen active">
+    <!-- النجوم والجسيمات العائمة في الخلفية -->
+    <div class="ambient-stars">
+      <span class="ambient-star star-1">✨</span>
+      <span class="ambient-star star-2">🌟</span>
+      <span class="ambient-star star-3">💫</span>
+      <span class="ambient-star star-4">✨</span>
+      <span class="ambient-star star-5">🌟</span>
+    </div>
+
+    <div class="landing-content">
+      
+      <!-- شارة اسم المستلم -->
+      <div class="recipient-tag animate-bounce-subtle">
+        <span class="sparkle-icon">✨</span>
+        <span id="envelope-recipient-name">رسالة خاصة لأغلى أخت ✉️</span>
+        <span class="sparkle-icon">✨</span>
+      </div>
+
+      <!-- الظرف ثلاثي الأبعاد المتقن -->
+      <div class="envelope-scene" id="envelope-scene" role="button" aria-label="اضغطي لفتح الظرف" tabindex="0">
+        <div class="envelope-container" id="envelope-container">
+          
+          <!-- خلفية الظرف -->
+          <div class="envelope-back"></div>
+
+          <!-- الرسالة الورقية بالداخل -->
+          <div class="letter-card" id="letter-card">
+            <div class="letter-inner">
+              <div class="letter-stamp">🎂</div>
+              <div class="letter-header">
+                <span class="letter-tag">رسالة خاصة ليكي</span>
+                <h3 id="letter-title">أهلاً شوشو! 🎉</h3>
+              </div>
+              <p class="letter-text" id="pre-password-text">
+                "مش عارف هتكون ردة فعلك إيه... بس جمعتلك أحلى صورنا ومواقفنا وذكرياتنا سوا في مكان واحد بمناسبة عيد ميلادك. جاهزة تفتحي الصندوق؟"
+              </p>
+              <button class="btn-primary btn-open-gate" id="btn-open-gate">
+                <span>افتحي خزانة الذكريات</span>
+                <i class="fa-solid fa-key"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- طيات الجيب الهندسي الدقيقة (بتقنية clip-path) -->
+          <div class="envelope-fold-left"></div>
+          <div class="envelope-fold-right"></div>
+          <div class="envelope-fold-bottom"></div>
+
+          <!-- الغطاء العلوي القابل للفتح -->
+          <div class="envelope-flap" id="envelope-flap"></div>
+
+          <!-- الختم الذهبي للشمع -->
+          <div class="envelope-seal" id="envelope-seal">
+            <div class="seal-inner">
+              <span class="seal-monogram" id="seal-monogram">شوشو</span>
+              <span class="seal-icon">✉️</span>
+            </div>
+            <div class="seal-pulse"></div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- إرشادات الفتح -->
+      <p class="envelope-hint-text animate-pulse" id="envelope-instruction">
+        دوسي على الظرف لفتحه 💌
+      </p>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 2. شاشة بوابة كلمة السر والحماية اللطيفة (PASSWORD GATE) -->
+  <!-- ========================================================================= -->
+  <section id="password-screen" class="view-screen">
+    <div class="password-box-card">
+      <div class="lock-icon-wrap">
+        <div class="lock-ring"></div>
+        <i class="fa-solid fa-lock" id="gate-lock-icon"></i>
+      </div>
+      <h2 class="gate-title">صندوق ذكريات خاص جداً 🔐</h2>
+      <p class="gate-description">
+        عشان كل اللي جوه هنا خاص بيكي ومحدش غيرك يفتحه، اكتبي الكلمة السرية اللي اتفقنا عليها للدخول!
+      </p>
+
+      <form class="password-form" id="password-form" onsubmit="return false;">
+        <div class="password-input-wrap">
+          <input 
+            type="password" 
+            id="password-input" 
+            class="password-field" 
+            placeholder="اكتبي كلمة السر هنا..." 
+            autocomplete="off"
+            autofocus
+          >
+          <button type="button" class="btn-toggle-visibility" id="btn-toggle-pwd" title="إظهار / إخفاء كلمة السر">
+            <i class="fa-solid fa-eye" id="pwd-eye-icon"></i>
+          </button>
+        </div>
+        <div class="pwd-error-msg" id="pwd-error-msg" role="alert">
+          كلمة السر مش صح، جربي تاني يا شوشو! 🤔
+        </div>
+        <button type="submit" class="btn-primary btn-submit-pwd" id="btn-submit-pwd">
+          <span>دخول والاحتفال</span>
+          <i class="fa-solid fa-arrow-left"></i>
+        </button>
+      </form>
+
+      <div class="password-hint-box" id="password-hint-box">
+        <span class="hint-text" id="hint-text">💡 تلميح: جربي 'Suss' (الكلمة السرية بتاعتنا!)</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 3. شاشة الترحيب والتهيئة العاطفية (WELCOME / INTRO SCREEN) -->
+  <!-- ========================================================================= -->
+  <section id="welcome-screen" class="view-screen">
+    <div class="welcome-card">
+      <div class="celebration-badge animate-bounce-subtle">
+        <span class="cake-emoji">🎂</span>
+        <span>عيد ميلاد سعيد يا أحلى أخت!</span>
+      </div>
+      <h1 class="welcome-heading" id="welcome-title">أهلاً بيكي يا شوشو! 🌟</h1>
+      <div class="welcome-quote-box">
+        <i class="fa-solid fa-quote-right quote-mark-start"></i>
+        <p class="welcome-text" id="welcome-text">
+          "كل حاجة هنا مننا ولينا... تفاصيل ومواقف صغيرة وضحكات يمكن ماتعرفيش إني لسه فاكرها كلها. كل سنة وإنتي طيبة وعقبال مليون سنة سعادة ونجاح! 🎂✨"
+        </p>
+        <i class="fa-solid fa-quote-left quote-mark-end"></i>
+      </div>
+      <div class="features-preview">
+        <div class="feature-tag"><i class="fa-solid fa-hourglass-start"></i> عداد الأخوة الحي</div>
+        <div class="feature-tag"><i class="fa-solid fa-music"></i> أغنيتنا الخاصة</div>
+        <div class="feature-tag"><i class="fa-solid fa-map-location-dot"></i> محطات رحلتنا</div>
+        <div class="feature-tag"><i class="fa-solid fa-camera"></i> ألبوم الذكريات</div>
+        <div class="feature-tag"><i class="fa-solid fa-gift"></i> الهدية والمفاجأة</div>
+      </div>
+      <button class="btn-primary btn-enter-dashboard" id="btn-enter-dashboard">
+        <span>يلا نبدأ الرحلة سوا ✨</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 4. رحلة الاستكشاف والمحطات (MAIN DASHBOARD - 6 SCREENS) -->
+  <!-- ========================================================================= -->
+  <main id="main-dashboard" class="view-screen">
+    
+    <!-- الشريط العلوي الثابت مع التفاعل والمظهر والتحكم بالموسيقى -->
+    <header class="top-nav">
+      <div class="nav-container">
+        <div class="nav-brand">
+          <span class="brand-monogram">شوشو</span>
+          <div class="brand-info">
+            <span class="brand-title" id="nav-brand-title">شوشو وأخوكي 💗</span>
+            <span class="brand-subtitle" id="nav-brand-badge">أحلى وأغلى أخت في الكون 🏆</span>
+          </div>
+        </div>
+
+        <!-- مؤشر المحطة الحالية في الشريط العلوي (6 محطات) -->
+        <div class="current-screen-badge" id="current-screen-badge">
+          <span class="screen-step-number" id="screen-step-number">1 / 6</span>
+          <span class="screen-step-title" id="screen-step-title">عداد الأخوة ⏳</span>
+        </div>
+
+        <div class="nav-controls">
+          <!-- زر التحكم المصغر بالموسيقى -->
+          <button class="nav-btn btn-mini-audio" id="btn-mini-audio" title="تشغيل / إيقاف الموسيقى">
+            <i class="fa-solid fa-music" id="mini-audio-icon"></i>
+            <span class="mini-audio-waves" id="mini-audio-waves">
+              <span></span><span></span><span></span>
+            </span>
+          </button>
+
+          <!-- زر تبديل الوضع الليلي والنهاري -->
+          <button class="nav-btn btn-theme-toggle" id="btn-theme-toggle" title="تبديل المظهر">
+            <i class="fa-solid fa-moon" id="theme-icon"></i>
+          </button>
+
+          <!-- زر تبديل طريقة العرض (محطات تفاعلية / تصفح كامل) -->
+          <button class="nav-btn btn-view-mode" id="btn-view-mode" title="تبديل طريقة العرض">
+            <i class="fa-solid fa-layer-group" id="view-mode-icon"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- شريط التقدم العلوي الدقيق (Progress Bar) -->
+      <div class="top-progress-bar-wrap">
+        <div class="top-progress-bar-fill" id="top-progress-fill" style="width: 16.6%;"></div>
+      </div>
+    </header>
+
+    <!-- أزرار التنقل السريع بين المحطات (6 محطات) -->
+    <nav class="quick-nav" id="screen-pills-nav">
+      <button type="button" class="quick-pill active" data-index="0"><i class="fa-solid fa-stopwatch"></i> العداد الحي</button>
+      <button type="button" class="quick-pill" data-index="1"><i class="fa-solid fa-route"></i> محطات رحلتنا</button>
+      <button type="button" class="quick-pill" data-index="2"><i class="fa-solid fa-headphones"></i> أغنيتنا</button>
+      <button type="button" class="quick-pill" data-index="3"><i class="fa-solid fa-gift"></i> الهدية المخفية</button>
+      <button type="button" class="quick-pill" data-index="4"><i class="fa-solid fa-photo-film"></i> ألبوم الصور</button>
+      <button type="button" class="quick-pill" data-index="5"><i class="fa-solid fa-heart"></i> ختام الهدية</button>
+    </nav>
+
+    <!-- ======================================================================= -->
+    <!-- القسم 1: عداد الأخوة والبداية (LIVE SIBLING COUNTER) -->
+    <!-- ======================================================================= -->
+    <section id="counter-section" class="content-section active-screen">
+      <!-- ترويسة الصفحة الترحيبية بالمحطة الأولى -->
+      <div class="hero-section">
+        <div class="hero-content">
+          <div class="hero-badges">
+            <span class="badge-pill badge-gold"><i class="fa-solid fa-crown"></i> <span id="hero-badge-1">أحلى وأغلى أخت في الكون 🏆</span></span>
+          </div>
+          <h1 class="hero-title" id="dashboard-hero-title">شوية من ذكرياتنا البسيطه جمعتها هنا ✨</h1>
+        </div>
+      </div>
+
+      <div class="section-card counter-card">
+        <div class="section-badge">
+          <i class="fa-solid fa-hourglass-half"></i>
+          <span>عداد رحلتنا سوا</span>
+        </div>
+        <h2 class="section-heading">بقالنا أد إيه بنجنن بعض وبنكبر سوا؟ ⏳</h2>
+        <p class="section-subtext" id="counter-subtext">
+          سنين وأيام وساعات وثواني من المشاركة، وخروجات الآيس كريم، ووقفتنا في ضهر بعض دايماً! 🤜🤛
+        </p>
+
+        <!-- شبكة أرقام العداد -->
+        <div class="counter-grid">
+          <div class="counter-box">
+            <span class="counter-number" id="count-years">0</span>
+            <span class="counter-label">سنة</span>
+          </div>
+          <div class="counter-box">
+            <span class="counter-number" id="count-days">0</span>
+            <span class="counter-label">يوم</span>
+          </div>
+          <div class="counter-box">
+            <span class="counter-number" id="count-hours">00</span>
+            <span class="counter-label">ساعة</span>
+          </div>
+          <div class="counter-box">
+            <span class="counter-number" id="count-minutes">00</span>
+            <span class="counter-label">دقيقة</span>
+          </div>
+          <div class="counter-box counter-seconds-box">
+            <span class="counter-number pulse-fast" id="count-seconds">00</span>
+            <span class="counter-label">ثانية</span>
+          </div>
+        </div>
+
+        <div class="counter-footer">
+          <button type="button" class="btn-secondary btn-cheer" id="btn-cheer">
+            <i class="fa-solid fa-sparkles"></i>
+            <span>فرقعة زينة واحتفال! 🎊</span>
+          </button>
+        </div>
+
+        <!-- أزرار الانتقال بين المحطات -->
+        <div class="screen-nav-footer">
+          <div class="screen-step-dots" data-current="0">
+            <span class="dot active"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </div>
+          <button type="button" class="btn-screen-nav btn-screen-next" data-goto="1">
+            <span>التالي: محطات رحلتنا 🗺️</span>
+            <i class="fa-solid fa-arrow-left"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================= -->
+    <!-- القسم 2: محطات رحلتنا وقصتنا (STORY TIMELINE) -->
+    <!-- ======================================================================= -->
+    <section id="timeline-section" class="content-section">
+      <div class="section-card">
+        <div class="section-badge">
+          <i class="fa-solid fa-signs-post"></i>
+          <span>محطات قصتنا</span>
+        </div>
+        <h2 class="section-heading">خلينا نقسم الصور لشوية محطات هتعبك خلي بالك طويل 😂</h2>
+
+        <div class="timeline-container" id="timeline-container">
+          <!-- يتم ملؤها ديناميكياً من config.js -->
+        </div>
+
+        <!-- أزرار الانتقال بين المحطات -->
+        <div class="screen-nav-footer">
+          <button type="button" class="btn-screen-nav btn-screen-prev" data-goto="0">
+            <i class="fa-solid fa-arrow-right"></i>
+            <span>السابق: العداد الحي ⏳</span>
+          </button>
+          <div class="screen-step-dots" data-current="1">
+            <span class="dot"></span>
+            <span class="dot active"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </div>
+          <button type="button" class="btn-screen-nav btn-screen-next" data-goto="2">
+            <span>التالي: أغنيتنا 🎶</span>
+            <i class="fa-solid fa-arrow-left"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================= -->
+    <!-- القسم 3: المشغل الموسيقي وأغنيتنا (AUDIO PLAYER) -->
+    <!-- ======================================================================= -->
+    <section id="audio-section" class="content-section">
+      <div class="section-card music-player-card">
+        <div class="section-badge">
+          <i class="fa-solid fa-record-vinyl"></i>
+          <span>أغنيتنا المفضلة</span>
+        </div>
+        <h2 class="section-heading">كلمات الاغنية بتعبر عن جزء بسيط من علاقتنا 🎶</h2>
+        <p class="section-subtext">علاقتنا اكبر بكتير من ان كلام يوصفه</p>
+
+        <div class="turntable-wrapper">
+          <!-- أسطوانة الفينيل الدوارة -->
+          <div class="vinyl-disc" id="vinyl-disc">
+            <div class="vinyl-groove"></div>
+            <div class="vinyl-center">
+              <img src="assets/images/yacht-sea-trip.jpg" alt="غلاف الأغنية" id="audio-cover-img" class="vinyl-cover-img" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2250%22 fill=%22%23F59E0B%22/><text x=%2250%22 y=%2258%22 font-size=%2235%22 text-anchor=%22middle%22 fill=%22white%22>🎵</text></svg>'">
+            </div>
+          </div>
+
+          <!-- إبرة مشغل الأسطوانات -->
+          <div class="turntable-needle" id="turntable-needle"></div>
+        </div>
+
+        <!-- شريط التقدم والوقت -->
+        <div class="audio-progress-container">
+          <span class="time-label" id="current-time">0:00</span>
+          <div class="progress-bar-wrap" id="progress-bar-wrap">
+            <div class="progress-bar-fill" id="progress-bar-fill"></div>
+          </div>
+          <span class="time-label" id="total-duration">0:00</span>
+        </div>
+
+        <!-- أزرار التحكم بالمشغل -->
+        <div class="audio-controls">
+          <button class="btn-ctrl" id="btn-audio-forward" title="تقديم 10 ثواني">
+            <i class="fa-solid fa-forward-step"></i>
+          </button>
+          <button class="btn-ctrl btn-play-main" id="btn-audio-play" title="تشغيل / إيقاف">
+            <i class="fa-solid fa-play" id="audio-play-icon"></i>
+          </button>
+          <button class="btn-ctrl" id="btn-audio-rewind" title="إرجاع 10 ثواني">
+            <i class="fa-solid fa-backward-step"></i>
+          </button>
+        </div>
+
+        <!-- التحكم بالصوت -->
+        <div class="volume-container">
+          <i class="fa-solid fa-volume-low"></i>
+          <input type="range" id="volume-slider" min="0" max="1" step="0.05" value="0.8" aria-label="مستوى الصوت">
+          <i class="fa-solid fa-volume-high"></i>
+        </div>
+
+        <!-- عنصر الصوت الأصلي -->
+        <audio id="main-audio-element" preload="auto">
+          <source src="assets/audio/our-song.mp3" type="audio/mp3">
+        </audio>
+
+        <!-- أزرار الانتقال بين المحطات -->
+        <div class="screen-nav-footer">
+          <button type="button" class="btn-screen-nav btn-screen-prev" data-goto="1">
+            <i class="fa-solid fa-arrow-right"></i>
+            <span>السابق: محطات رحلتنا 🗺️</span>
+          </button>
+          <div class="screen-step-dots" data-current="2">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot active"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </div>
+          <button type="button" class="btn-screen-nav btn-screen-next" data-goto="3">
+            <span>التالي: الهدية المخفية 🎁</span>
+            <i class="fa-solid fa-arrow-left"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================= -->
+    <!-- القسم 4: الهدية المخفية (HIDDEN GIFT BOX) -->
+    <!-- ======================================================================= -->
+    <section id="hidden-gift-section" class="content-section">
+      <div class="section-card gift-highlight-card">
+        <div class="section-badge badge-gift">
+          <i class="fa-solid fa-box-open"></i>
+          <span>مفاجأة خاصة!</span>
+        </div>
+        <h2 class="section-heading" id="gift-heading">لسه في حاجة مخبيهالك... 🎁</h2>
+        <p class="section-subtext">دوسي على صندوق الهدية وافتحي المفاجأة!</p>
+
+        <!-- صندوق الهدية التفاعلي ثلاثي الأبعاد -->
+        <div class="interactive-gift-container" id="gift-trigger" role="button" aria-label="افتحي الهدية المخفية" tabindex="0">
+          <div class="gift-box-3d" id="gift-box-3d">
+            <img src="assets/images/gift-box.png" alt="صندوق الهدية" class="gift-box-img" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎁</text></svg>'">
+            <div class="gift-glow-effect"></div>
+          </div>
+          <div class="gift-tap-hint">
+            <span class="finger-tap">👆</span>
+            <span>دوسي هنا لفتح الهدية!</span>
+          </div>
+        </div>
+
+        <!-- أزرار الانتقال بين المحطات -->
+        <div class="screen-nav-footer">
+          <button type="button" class="btn-screen-nav btn-screen-prev" data-goto="2">
+            <i class="fa-solid fa-arrow-right"></i>
+            <span>السابق: أغنيتنا 🎶</span>
+          </button>
+          <div class="screen-step-dots" data-current="3">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot active"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </div>
+          <button type="button" class="btn-screen-nav btn-screen-next" data-goto="4">
+            <span>التالي: ألبوم الصور 🖼️</span>
+            <i class="fa-solid fa-arrow-left"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================= -->
+    <!-- القسم 5: معرض وألبوم الصور (MEMORIES GALLERY) -->
+    <!-- ======================================================================= -->
+    <section id="gallery-section" class="content-section">
+      <div class="section-card">
+        <div class="section-badge">
+          <i class="fa-solid fa-images"></i>
+          <span>ألبوم الذكريات</span>
+        </div>
+        <h2 class="section-heading">ألبوم الصور وأجمل الذكريات 🖼️</h2>
+
+        <!-- فلاتر المعرض -->
+        <div class="gallery-filters" id="gallery-filters">
+          <button class="filter-pill active" data-filter="all">كل الذكريات (12) 🌟</button>
+          <button class="filter-pill" data-filter="trips">رحلات ومغامرات 🏖️</button>
+          <button class="filter-pill" data-filter="milestones">مناسبات ونجاح 🎓</button>
+          <button class="filter-pill" data-filter="childhood">الطفولة 👶</button>
+        </div>
+
+        <!-- شبكة صور المعرض -->
+        <div class="gallery-grid" id="gallery-grid">
+          <!-- يتم بناؤها ديناميكياً من config.js -->
+        </div>
+
+        <!-- أزرار الانتقال بين المحطات -->
+        <div class="screen-nav-footer">
+          <button type="button" class="btn-screen-nav btn-screen-prev" data-goto="3">
+            <i class="fa-solid fa-arrow-right"></i>
+            <span>السابق: الهدية المخفية 🎁</span>
+          </button>
+          <div class="screen-step-dots" data-current="4">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot active"></span>
+            <span class="dot"></span>
+          </div>
+          <button type="button" class="btn-screen-nav btn-screen-next" data-goto="5">
+            <span>التالي: ختام الهدية 💗</span>
+            <i class="fa-solid fa-arrow-left"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================= -->
+    <!-- القسم 6: ختام الهدية والاحتفال (CELEBRATION SCREEN) -->
+    <!-- ======================================================================= -->
+    <section id="celebration-section" class="content-section">
+      <div class="section-card celebration-card">
+        <div class="celebration-crown">👑</div>
+        <div class="section-badge badge-gold">
+          <i class="fa-solid fa-crown"></i>
+          <span>محطة الختام والمحبة</span>
+        </div>
+        <h2 class="section-heading">وصلنا لآخر محطة.. بس محبتنا وسندنا ملوش نهاية! 💗✨</h2>
+        <p class="celebration-lead">
+          "أحسن وأغلى أخت في الدنيا كلها. ربنا يجعل كل سنينك الجاية فرح وسعادة ونجاح وتألق دايماً!"
+        </p>
+
+        <div class="celebration-highlights">
+          <div class="highlight-item">
+            <span class="hl-icon">🎂</span>
+            <h4>كل سنة وإنتي طيبة</h4>
+            <p>عقبال 100 سنة في صحة وهنا وراحة بال وسعادة</p>
+          </div>
+          <div class="highlight-item">
+            <span class="hl-icon">🏆</span>
+            <h4>أحسن وأطيب أخت</h4>
+            <p>سند وضهر وأمان وضحكة و عيلتي كلها</p>
+          </div>
+        </div>
+
+        <div class="celebration-actions">
+          <button type="button" class="btn-primary btn-grand-confetti" id="btn-grand-confetti">
+            <i class="fa-solid fa-champagne-glasses"></i>
+            <span>فرقعة زينة واحتفال نهائي! 🎊</span>
+          </button>
+          <button type="button" class="btn-secondary btn-restart-journey" data-goto="0">
+            <i class="fa-solid fa-rotate-right"></i>
+            <span>إعادة الرحلة من البداية 🔄</span>
+          </button>
+        </div>
+
+        <!-- أزرار الانتقال بين المحطات -->
+        <div class="screen-nav-footer">
+          <button type="button" class="btn-screen-nav btn-screen-prev" data-goto="4">
+            <i class="fa-solid fa-arrow-right"></i>
+            <span>السابق: ألبوم الصور 🖼️</span>
+          </button>
+          <div class="screen-step-dots" data-current="5">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot active"></span>
+          </div>
+          <button type="button" class="btn-screen-nav btn-screen-restart" data-goto="0">
+            <span>البداية: عداد الأخوة ⏳</span>
+            <i class="fa-solid fa-arrow-rotate-left"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- شريط المحطات العائم في الأسفل للتنقل السريع (6 محطات) -->
+    <nav class="floating-dock-nav" id="floating-dock" aria-label="شريط المحطات السريع">
+      <button type="button" class="dock-btn active" data-index="0" title="عداد الأخوة">
+        <i class="fa-solid fa-stopwatch"></i>
+        <span>العداد</span>
+      </button>
+      <button type="button" class="dock-btn" data-index="1" title="محطات قصتنا">
+        <i class="fa-solid fa-route"></i>
+        <span>المحطات</span>
+      </button>
+      <button type="button" class="dock-btn" data-index="2" title="أغنيتنا">
+        <i class="fa-solid fa-headphones"></i>
+        <span>الأغنية</span>
+      </button>
+      <button type="button" class="dock-btn" data-index="3" title="الهدية المخفية">
+        <i class="fa-solid fa-gift"></i>
+        <span>الهدية</span>
+      </button>
+      <button type="button" class="dock-btn" data-index="4" title="ألبوم الصور">
+        <i class="fa-solid fa-photo-film"></i>
+        <span>الألبوم</span>
+      </button>
+      <button type="button" class="dock-btn" data-index="5" title="ختام الهدية">
+        <i class="fa-solid fa-heart"></i>
+        <span>الختام</span>
+      </button>
+    </nav>
+
+  </main>
+
+  <!-- ========================================================================= -->
+  <!-- النافذة المنبثقة 1: مفاجأة الهدية المخفية (GIFT MODAL) -->
+  <!-- ========================================================================= -->
+  <div class="modal-overlay" id="gift-modal" role="dialog" aria-modal="true" aria-label="مفاجأة الهدية">
+    <div class="modal-dialog gift-dialog">
+      <button class="modal-close-btn" id="btn-close-gift-modal" aria-label="إغلاق النافذة">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="gift-reveal-img-wrap" id="gift-reveal-img-wrap" style="text-align: center; padding: 1.5rem 1rem;">
+        <img id="gift-reveal-img" src="assets/images/whatsapp-surprise-gift.jpeg" alt="مفاجأة الهدية" style="max-height: 420px; width: auto; max-width: 100%; border-radius: 20px; object-fit: contain; margin: 0 auto; display: block; box-shadow: 0 12px 30px rgba(0,0,0,0.15);">
+        <div class="gift-surprise-caption" style="margin-top: 1.25rem; text-align: center;">
+          <h3 style="font-size: 1.45rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.4rem;">توقعي ديه يه 😉</h3>
+          <p style="font-size: 1.2rem; font-weight: 700; color: #ec4899; margin: 0;">حاجة جوه حاجة جوه حاجة جوه حاجة</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- النافذة المنبثقة 2: عرض الصور بالشاشة الكاملة (LIGHTBOX MODAL) -->
+  <!-- ========================================================================= -->
+  <div class="modal-overlay" id="lightbox-modal" role="dialog" aria-modal="true">
+    <div class="lightbox-dialog">
+      <button class="modal-close-btn" id="btn-close-lightbox" aria-label="إغلاق">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="lightbox-img-wrapper">
+        <img src="" alt="صورة مكبرة" id="lightbox-img">
+      </div>
+
+      <div class="lightbox-nav">
+        <!-- في الـ RTL السهم اليمين يرجع والسهم اليسار يقدم -->
+        <button class="lightbox-btn" id="btn-lightbox-prev" aria-label="الصورة السابقة">
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+        <button class="lightbox-btn" id="btn-lightbox-next" aria-label="الصورة التالية">
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- التنبيهات المنبثقة السريعة -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- ملفات الجافاسكريبت -->
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
