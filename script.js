@@ -13,7 +13,7 @@
   // ----------------------------------------------------------------------------
   const CONFIG = window.SIBLING_GIFT_CONFIG || {
     recipientName: "شوشو",
-    senderName: "أخوكي",
+    senderName: "",
     relationshipBadge: "أحلى وأغلى أخت في الكون 🏆",
     secretPassword: "Suss",
     passwordHint: "💡 تلميح: جربي 'Suss' (الكلمة السرية بتاعتنا!)",
@@ -89,7 +89,6 @@
     // Envelope & Seals
     setTxt('envelope-recipient-name', CONFIG.envelopeText || `رسالة خاصة لـ ${CONFIG.recipientName} ✉️`);
     setTxt('seal-monogram', (CONFIG.recipientName || 'شوشو').substring(0, 4));
-    setTxt('letter-title', `أهلاً ${CONFIG.recipientName}! 🎉`);
     setTxt('pre-password-text', `"${CONFIG.prePasswordMessage}"`);
     setTxt('envelope-instruction', CONFIG.envelopeInstruction || "دوسي على الظرف لفتحه 💌");
 
@@ -97,11 +96,12 @@
     setTxt('hint-text', CONFIG.passwordHint || "💡 تلميح: جربي 'Suss'");
 
     // Welcome Screen
-    setTxt('welcome-title', `أهلاً بيكي يا ${CONFIG.recipientName}! 🌟`);
+    setTxt('welcome-badge-text', CONFIG.welcomeBadge || "🎂 كل سنة وانت طيبة يا حببتي");
+    setTxt('welcome-title', CONFIG.welcomeTitle || "ان شاءالله الهدية تعجبك 🙂↔️");
     setTxt('welcome-text', `"${CONFIG.welcomeMessage}"`);
 
     // Nav & Hero
-    setTxt('nav-brand-title', `${CONFIG.recipientName} و${CONFIG.senderName} 💗`);
+    setTxt('nav-brand-title', CONFIG.senderName ? `${CONFIG.recipientName} و${CONFIG.senderName} 💗` : `${CONFIG.recipientName} 💗`);
     setTxt('nav-brand-badge', CONFIG.relationshipBadge || "أحلى وأغلى أخت في الكون 🏆");
     setTxt('hero-badge-1', CONFIG.relationshipBadge || "أحلى وأغلى أخت في الكون 🏆");
     setTxt('dashboard-hero-title', CONFIG.headerTitle || "شوية من ذكرياتنا البسيطه جمعتها هنا ✨");
@@ -318,6 +318,12 @@
   // 6.5 DASHBOARD SCREEN-BY-SCREEN ENGINE (محرك التنقل بين محطات الهدية)
   // ----------------------------------------------------------------------------
   function setupDashboardScreens() {
+    const dashboard = document.getElementById('main-dashboard');
+    if (dashboard) {
+      dashboard.classList.add('main-dashboard', 'mode-screens');
+      dashboard.classList.remove('mode-continuous');
+    }
+
     // 1. Hook up all "next", "prev", and "restart" buttons
     document.querySelectorAll('.btn-screen-nav, .btn-restart-journey').forEach(btn => {
       btn.addEventListener('click', (e) => {
@@ -356,7 +362,6 @@
 
     // 4. View mode toggle (محطات تفاعلية / تصفح كامل)
     const btnViewMode = document.getElementById('btn-view-mode');
-    const dashboard = document.getElementById('main-dashboard');
     if (btnViewMode && dashboard) {
       btnViewMode.addEventListener('click', () => {
         isContinuousScrollMode = !isContinuousScrollMode;
@@ -904,7 +909,7 @@
     btn.style.transform = 'scale(1.2)';
     setTimeout(() => btn.style.transform = '', 200);
     triggerConfettiBurst({ particleCount: 15, spread: 45 });
-    showToast("💛 تم إرسال محبة أخوية +1!");
+    showToast("💗 تم إرسال محبة أخوية +1!");
   };
 
   // ----------------------------------------------------------------------------
@@ -1087,8 +1092,8 @@
     const title = document.getElementById('lightbox-title');
     const caption = document.getElementById('lightbox-caption');
     if (img) img.src = item.image;
-    if (title) title.textContent = item.title || "صورة من الذكريات";
-    if (caption) caption.textContent = item.caption || item.note || "";
+    if (title) title.textContent = "";
+    if (caption) caption.textContent = "";
   }
 
   window.openLightboxGallery = function (index) {

@@ -12,14 +12,14 @@
   // 1. CONFIGURATION SAFE RETRIEVAL
   // ----------------------------------------------------------------------------
   const CONFIG = window.SIBLING_GIFT_CONFIG || {
-    recipientName: "MK",
-    senderName: "أخوكي",
-    relationshipBadge: "أحلى أخت في الدنيا 🏆",
+    recipientName: "شوشو",
+    senderName: "",
+    relationshipBadge: "أحلى وأغلى أخت في الكون 🏆",
     secretPassword: "Suss",
     passwordHint: "💡 تلميح: جربي 'Suss' (الكلمة السرية بتاعتنا!)",
     envelopeText: "رسالة خاصة لأغلى أخت ✉️",
     envelopeInstruction: "دوسي على الظرف لفتحه 💌",
-    prePasswordMessage: "مش عارف هتكون ردة فعلك إيه... بس حبيت أعملك حاجة مخصوص بمناسبة عيد ميلادك تجمع أحلى ذكرياتنا وضحكاتنا سوا.",
+    prePasswordMessage: "مش عارف هتكون ردة فعلك إيه... بس جمعتلك أحلى صورنا ومواقفنا وذكرياتنا سوا في مكان واحد بمناسبة عيد ميلادك. جاهزة تفتحي الصندوق؟",
     welcomeMessage: "كل حاجة هنا مننا ولينا... تفاصيل ومواقف صغيرة وضحكات يمكن ماتعرفيش إني لسه فاكرها كلها. كل سنة وإنتي طيبة وعقبال مليون سنة سعادة ونجاح! 🎂✨",
     headerTitle: "شوية من ذكرياتنا البسيطه جمعتها هنا ✨",
     headerSubtitle: "",
@@ -27,17 +27,16 @@
     timerSubtext: "سنين وأيام وساعات وثواني من المشاركة، وخروجات الآيس كريم، ووقفتنا في ضهر بعض دايماً! 🤜🤛",
     timeline: [],
     audio: {
-      trackTitle: "أغنيتنا والموسيقى الهادية 🎶",
-      artistName: "الموسيقى المصاحبة لذكرياتنا",
+      trackTitle: "",
+      artistName: "",
       audioSrc: "assets/audio/our-song.mp3",
-      coverImg: "assets/images/memory1.jpg"
+      coverImg: "assets/images/yacht-sea-trip.jpg"
     },
-    photoMoments: [],
     hiddenGift: {
       boxText: "لسه في حاجة مخبيهالك... 🎁",
-      revealTitle: "لقيتي الهدية والمفاجأة المخفية! 🎉",
-      vouchers: [],
-      secretLetter: "كل سنة وإنتي طيبة يا MK! بحبك دايماً وفخور بيكي! 💛"
+      revealImage: "assets/images/whatsapp-surprise-gift.jpeg",
+      captionTitle: "توقعي ديه يه 😉",
+      captionSubtitle: "حاجة جوه حاجة جوه حاجة جوه حاجة"
     },
     gallery: []
   };
@@ -50,15 +49,14 @@
   let synthAudioCtx = null;
   let synthInterval = null;
 
-  // Screen-by-Screen Journey Management State
+  // Screen-by-Screen Journey Management State (6 screens)
   const DASHBOARD_SCREENS = [
     { id: 'counter-section', title: 'عداد الأخوة ⏳', shortTitle: 'العداد', icon: 'fa-stopwatch' },
     { id: 'timeline-section', title: 'محطات رحلتنا 🗺️', shortTitle: 'المحطات', icon: 'fa-route' },
     { id: 'audio-section', title: 'أغنيتنا المفضلة 🎶', shortTitle: 'الأغنية', icon: 'fa-headphones' },
-    { id: 'moments-section', title: 'لقطات خاصة 📸', shortTitle: 'لقطاتنا', icon: 'fa-camera-retro' },
     { id: 'hidden-gift-section', title: 'الهدية المخفية 🎁', shortTitle: 'الهدية', icon: 'fa-gift' },
     { id: 'gallery-section', title: 'ألبوم الصور 🖼️', shortTitle: 'الألبوم', icon: 'fa-photo-film' },
-    { id: 'celebration-section', title: 'ختام الهدية 💛', shortTitle: 'الختام', icon: 'fa-heart' }
+    { id: 'celebration-section', title: 'ختام الهدية 💗', shortTitle: 'الختام', icon: 'fa-heart' }
   ];
 
   let currentDashboardScreenIndex = 0;
@@ -90,8 +88,7 @@
   function populateStaticContent() {
     // Envelope & Seals
     setTxt('envelope-recipient-name', CONFIG.envelopeText || `رسالة خاصة لـ ${CONFIG.recipientName} ✉️`);
-    setTxt('seal-monogram', (CONFIG.recipientName || 'MK').substring(0, 3).toUpperCase());
-    setTxt('letter-title', `أهلاً ${CONFIG.recipientName}! 🎉`);
+    setTxt('seal-monogram', (CONFIG.recipientName || 'شوشو').substring(0, 4));
     setTxt('pre-password-text', `"${CONFIG.prePasswordMessage}"`);
     setTxt('envelope-instruction', CONFIG.envelopeInstruction || "دوسي على الظرف لفتحه 💌");
 
@@ -99,13 +96,14 @@
     setTxt('hint-text', CONFIG.passwordHint || "💡 تلميح: جربي 'Suss'");
 
     // Welcome Screen
-    setTxt('welcome-title', `أهلاً بيكي يا أغلى أخت! 🌟`);
+    setTxt('welcome-badge-text', CONFIG.welcomeBadge || "🎂 كل سنة وانت طيبة يا حببتي");
+    setTxt('welcome-title', CONFIG.welcomeTitle || "ان شاءالله الهدية تعجبك 🙂↔️");
     setTxt('welcome-text', `"${CONFIG.welcomeMessage}"`);
 
     // Nav & Hero
-    setTxt('nav-brand-title', `${CONFIG.recipientName} و${CONFIG.senderName} 💛`);
-    setTxt('nav-brand-badge', CONFIG.relationshipBadge || "أحلى أخت في الدنيا 🏆");
-    setTxt('hero-badge-1', CONFIG.relationshipBadge || "أحلى أخت في الكون 🏆");
+    setTxt('nav-brand-title', CONFIG.senderName ? `${CONFIG.recipientName} و${CONFIG.senderName} 💗` : `${CONFIG.recipientName} 💗`);
+    setTxt('nav-brand-badge', CONFIG.relationshipBadge || "أحلى وأغلى أخت في الكون 🏆");
+    setTxt('hero-badge-1', CONFIG.relationshipBadge || "أحلى وأغلى أخت في الكون 🏆");
     setTxt('dashboard-hero-title', CONFIG.headerTitle || "شوية من ذكرياتنا البسيطه جمعتها هنا ✨");
     const subEl = document.getElementById('dashboard-hero-subtitle');
     if (subEl) {
@@ -117,37 +115,26 @@
         subEl.style.display = 'none';
       }
     }
-    setTxt('counter-subtext', CONFIG.timerSubtext || "سنين وأيام من الذكريات الجميلة والمواقف الحلوة!");
-
-    // Footer
-    setTxt('footer-author', `صُنعت بكل حب لعيد ميلاد ${CONFIG.recipientName} بواسطة ${CONFIG.senderName}`);
+    setTxt('counter-subtext', CONFIG.timerSubtext || "سنين وأيام وساعات وثواني من المشاركة، وخروجات الآيس كريم، ووقفتنا في ضهر بعض دايماً! 🤜🤛");
 
     // Render Timeline
     renderTimeline();
 
     // Render Audio Details
     if (CONFIG.audio) {
-      setTxt('track-title', CONFIG.audio.trackTitle || "أغنيتنا والموسيقى الهادية");
-      setTxt('track-artist', CONFIG.audio.artistName || "الموسيقى المصاحبة لذكرياتنا");
       const cover = document.getElementById('audio-cover-img');
       if (cover && CONFIG.audio.coverImg) cover.src = CONFIG.audio.coverImg;
       const audioElem = document.getElementById('main-audio-element');
       if (audioElem && CONFIG.audio.audioSrc) audioElem.src = CONFIG.audio.audioSrc;
     }
 
-    // Render Hidden Gift letter & Vouchers
+    // Render Hidden Gift image
     if (CONFIG.hiddenGift) {
       setTxt('gift-heading', CONFIG.hiddenGift.boxText || "لسه في حاجة مخبيهالك... 🎁");
-      setTxt('gift-modal-title', CONFIG.hiddenGift.revealTitle || "لقيتي الهدية والمفاجأة المخفية! 🎉");
-      setTxt('gift-modal-subtitle', CONFIG.hiddenGift.revealSubtitle || "دي 3 كروت كوبونات أخوية ذهبية رسمية + رسالة خاصة ليكي:");
-      setTxt('secret-letter-text', CONFIG.hiddenGift.secretLetter || "");
       const revealImg = document.getElementById('gift-reveal-img');
-      const revealWrap = document.getElementById('gift-reveal-img-wrap');
       if (revealImg && CONFIG.hiddenGift.revealImage) {
         revealImg.src = CONFIG.hiddenGift.revealImage;
-        if (revealWrap) revealWrap.style.display = 'block';
       }
-      renderVouchers();
     }
   }
 
@@ -331,6 +318,12 @@
   // 6.5 DASHBOARD SCREEN-BY-SCREEN ENGINE (محرك التنقل بين محطات الهدية)
   // ----------------------------------------------------------------------------
   function setupDashboardScreens() {
+    const dashboard = document.getElementById('main-dashboard');
+    if (dashboard) {
+      dashboard.classList.add('main-dashboard', 'mode-screens');
+      dashboard.classList.remove('mode-continuous');
+    }
+
     // 1. Hook up all "next", "prev", and "restart" buttons
     document.querySelectorAll('.btn-screen-nav, .btn-restart-journey').forEach(btn => {
       btn.addEventListener('click', (e) => {
@@ -369,7 +362,6 @@
 
     // 4. View mode toggle (محطات تفاعلية / تصفح كامل)
     const btnViewMode = document.getElementById('btn-view-mode');
-    const dashboard = document.getElementById('main-dashboard');
     if (btnViewMode && dashboard) {
       btnViewMode.addEventListener('click', () => {
         isContinuousScrollMode = !isContinuousScrollMode;
@@ -396,7 +388,7 @@
       btnGrandConfetti.addEventListener('click', () => {
         triggerConfettiBurst({ particleCount: 160, spread: 130 });
         playSuccessChime();
-        showToast('🎉 كل سنة وإنتي طيبة وبألف خير يا أغلى أخت! 👑💛');
+        showToast('🎉 كل سنة وإنتي طيبة وبألف خير يا أغلى أخت! 👑💗');
       });
     }
 
@@ -565,7 +557,7 @@
     if (btnCheer) {
       btnCheer.addEventListener('click', () => {
         triggerConfettiBurst({ particleCount: 80, spread: 100 });
-        showToast("🎊 كل سنة وإنتي طيبة وسعيدة يا أحلى أخت في الدنيا! 💛");
+        showToast("🎊 كل سنة وإنتي طيبة وسعيدة يا أحلى أخت في الدنيا! 💗");
       });
     }
   }
@@ -917,7 +909,7 @@
     btn.style.transform = 'scale(1.2)';
     setTimeout(() => btn.style.transform = '', 200);
     triggerConfettiBurst({ particleCount: 15, spread: 45 });
-    showToast("💛 تم إرسال محبة أخوية +1!");
+    showToast("💗 تم إرسال محبة أخوية +1!");
   };
 
   // ----------------------------------------------------------------------------
@@ -1035,10 +1027,7 @@
 
       grid.innerHTML = filtered.map((item, index) => `
         <div class="gallery-item" data-idx="${index}" onclick="window.openLightboxGallery(${index})">
-          <img src="${escapeHTML(item.image)}" alt="${escapeHTML(item.caption)}" loading="lazy" onerror="this.src='assets/images/memory1.jpg'">
-          <div class="gallery-overlay">
-            <span class="gallery-caption">${escapeHTML(item.caption)}</span>
-          </div>
+          <img src="${escapeHTML(item.image)}" alt="" loading="lazy" onerror="this.src='assets/images/childhood-hug.jpg'">
         </div>
       `).join('');
     }
@@ -1103,8 +1092,8 @@
     const title = document.getElementById('lightbox-title');
     const caption = document.getElementById('lightbox-caption');
     if (img) img.src = item.image;
-    if (title) title.textContent = item.title || "صورة من الذكريات";
-    if (caption) caption.textContent = item.caption || item.note || "";
+    if (title) title.textContent = "";
+    if (caption) caption.textContent = "";
   }
 
   window.openLightboxGallery = function (index) {

@@ -65,7 +65,6 @@
               <div class="letter-stamp">🎂</div>
               <div class="letter-header">
                 <span class="letter-tag">رسالة خاصة ليكي</span>
-                <h3 id="letter-title">أهلاً شوشو! 🎉</h3>
               </div>
               <p class="letter-text" id="pre-password-text">
                 "مش عارف هتكون ردة فعلك إيه... بس جمعتلك أحلى صورنا ومواقفنا وذكرياتنا سوا في مكان واحد بمناسبة عيد ميلادك. جاهزة تفتحي الصندوق؟"
@@ -109,42 +108,52 @@
   <!-- 2. شاشة بوابة كلمة السر والحماية اللطيفة (PASSWORD GATE) -->
   <!-- ========================================================================= -->
   <section id="password-screen" class="view-screen">
-    <div class="password-box-card">
-      <div class="lock-icon-wrap">
-        <div class="lock-ring"></div>
-        <i class="fa-solid fa-lock" id="gate-lock-icon"></i>
+    <div class="modal-card" id="password-box">
+      <div class="lock-icon-wrapper">
+        <div class="lock-circle">
+          <i class="fa-solid fa-lock" id="lock-icon"></i>
+        </div>
       </div>
-      <h2 class="gate-title">صندوق ذكريات خاص جداً 🔐</h2>
-      <p class="gate-description">
-        عشان كل اللي جوه هنا خاص بيكي ومحدش غيرك يفتحه، اكتبي الكلمة السرية اللي اتفقنا عليها للدخول!
-      </p>
+
+      <div class="password-header">
+        <h2>صندوق ذكريات خاص جداً 🔐</h2>
+        <p class="subtitle">
+          عشان كل اللي جوه هنا خاص بيكي ومحدش غيرك يفتحه، اكتبي الكلمة السرية اللي اتفقنا عليها للدخول!
+        </p>
+      </div>
 
       <form class="password-form" id="password-form" onsubmit="return false;">
-        <div class="password-input-wrap">
+        <div class="input-group">
+          <i class="fa-solid fa-key input-icon"></i>
           <input 
             type="password" 
             id="password-input" 
-            class="password-field" 
             placeholder="اكتبي كلمة السر هنا..." 
             autocomplete="off"
             autofocus
           >
-          <button type="button" class="btn-toggle-visibility" id="btn-toggle-pwd" title="إظهار / إخفاء كلمة السر">
+          <button type="button" class="btn-toggle-pwd" id="btn-toggle-pwd" title="إظهار / إخفاء كلمة السر">
             <i class="fa-solid fa-eye" id="pwd-eye-icon"></i>
           </button>
         </div>
-        <div class="pwd-error-msg" id="pwd-error-msg" role="alert">
-          كلمة السر مش صح، جربي تاني يا شوشو! 🤔
-        </div>
-        <button type="submit" class="btn-primary btn-submit-pwd" id="btn-submit-pwd">
-          <span>دخول والاحتفال</span>
-          <i class="fa-solid fa-arrow-left"></i>
-        </button>
-      </form>
 
-      <div class="password-hint-box" id="password-hint-box">
-        <span class="hint-text" id="hint-text">💡 تلميح: جربي 'Suss' (الكلمة السرية بتاعتنا!)</span>
-      </div>
+        <div class="feedback-msg" id="feedback-msg" role="alert"></div>
+
+        <div class="password-actions">
+          <button type="submit" class="btn-primary btn-unlock" id="btn-submit-pwd">
+            <span>دخول والاحتفال</span>
+            <i class="fa-solid fa-arrow-left"></i>
+          </button>
+          <button type="button" class="btn-text" id="btn-hint">
+            <i class="fa-solid fa-lightbulb"></i>
+            <span>محتاجة تلميح؟</span>
+          </button>
+        </div>
+
+        <div class="hint-container" id="hint-container">
+          <span id="hint-text">💡 تلميح: جربي 'Suss' (الكلمة السرية بتاعتنا!)</span>
+        </div>
+      </form>
     </div>
   </section>
 
@@ -153,24 +162,19 @@
   <!-- ========================================================================= -->
   <section id="welcome-screen" class="view-screen">
     <div class="welcome-card">
-      <div class="celebration-badge animate-bounce-subtle">
-        <span class="cake-emoji">🎂</span>
-        <span>عيد ميلاد سعيد يا أحلى أخت!</span>
+      <div class="celebration-badge animate-bounce-subtle" id="welcome-badge">
+        <span id="welcome-badge-text">🎂 كل سنة وانت طيبة يا حببتي</span>
       </div>
-      <h1 class="welcome-heading" id="welcome-title">أهلاً بيكي يا شوشو! 🌟</h1>
-      <div class="welcome-quote-box">
-        <i class="fa-solid fa-quote-right quote-mark-start"></i>
-        <p class="welcome-text" id="welcome-text">
-          "كل حاجة هنا مننا ولينا... تفاصيل ومواقف صغيرة وضحكات يمكن ماتعرفيش إني لسه فاكرها كلها. كل سنة وإنتي طيبة وعقبال مليون سنة سعادة ونجاح! 🎂✨"
-        </p>
-        <i class="fa-solid fa-quote-left quote-mark-end"></i>
-      </div>
-      <div class="features-preview">
+      <h2 class="welcome-heading" id="welcome-title">ان شاءالله الهدية تعجبك 🙂↔️</h2>
+      <p class="welcome-text" id="welcome-text">
+        "كل حاجة هنا مننا ولينا... تفاصيل ومواقف صغيرة وضحكات يمكن ماتعرفيش إني لسه فاكرها كلها. كل سنة وإنتي طيبة وعقبال مليون سنة سعادة ونجاح! 🎂✨"
+      </p>
+      <div class="welcome-features-list">
         <div class="feature-tag"><i class="fa-solid fa-hourglass-start"></i> عداد الأخوة الحي</div>
         <div class="feature-tag"><i class="fa-solid fa-music"></i> أغنيتنا الخاصة</div>
         <div class="feature-tag"><i class="fa-solid fa-map-location-dot"></i> محطات رحلتنا</div>
-        <div class="feature-tag"><i class="fa-solid fa-camera"></i> ألبوم الذكريات</div>
         <div class="feature-tag"><i class="fa-solid fa-gift"></i> الهدية والمفاجأة</div>
+        <div class="feature-tag"><i class="fa-solid fa-camera"></i> ألبوم الذكريات</div>
       </div>
       <button class="btn-primary btn-enter-dashboard" id="btn-enter-dashboard">
         <span>يلا نبدأ الرحلة سوا ✨</span>
@@ -181,7 +185,7 @@
   <!-- ========================================================================= -->
   <!-- 4. رحلة الاستكشاف والمحطات (MAIN DASHBOARD - 6 SCREENS) -->
   <!-- ========================================================================= -->
-  <main id="main-dashboard" class="view-screen">
+  <main id="main-dashboard" class="view-screen main-dashboard mode-screens">
     
     <!-- الشريط العلوي الثابت مع التفاعل والمظهر والتحكم بالموسيقى -->
     <header class="top-nav">
@@ -189,14 +193,14 @@
         <div class="nav-brand">
           <span class="brand-monogram">شوشو</span>
           <div class="brand-info">
-            <span class="brand-title" id="nav-brand-title">شوشو وأخوكي 💗</span>
+            <span class="brand-title" id="nav-brand-title">شوشو 💗</span>
             <span class="brand-subtitle" id="nav-brand-badge">أحلى وأغلى أخت في الكون 🏆</span>
           </div>
         </div>
 
         <!-- مؤشر المحطة الحالية في الشريط العلوي (6 محطات) -->
         <div class="current-screen-badge" id="current-screen-badge">
-          <span class="screen-step-number" id="screen-step-number">1 / 6</span>
+          <span class="screen-step-number" id="screen-step-number" dir="ltr">1 / 6</span>
           <span class="screen-step-title" id="screen-step-title">عداد الأخوة ⏳</span>
         </div>
 
@@ -620,9 +624,11 @@
         <i class="fa-solid fa-xmark"></i>
       </button>
 
-      <div class="gift-reveal-img-wrap" id="gift-reveal-img-wrap" style="text-align: center; padding: 1.5rem 1rem;">
-        <img id="gift-reveal-img" src="assets/images/whatsapp-surprise-gift.jpeg" alt="مفاجأة الهدية" style="max-height: 420px; width: auto; max-width: 100%; border-radius: 20px; object-fit: contain; margin: 0 auto; display: block; box-shadow: 0 12px 30px rgba(0,0,0,0.15);">
-        <div class="gift-surprise-caption" style="margin-top: 1.25rem; text-align: center;">
+      <div class="gift-surprise-wrap" style="text-align: center; padding: 10px 0;">
+        <div class="gift-reveal-img-wrap" id="gift-reveal-img-wrap" style="max-width: 320px; margin: 0 auto; border-radius: var(--radius-lg); overflow: hidden; box-shadow: 0 12px 30px rgba(0,0,0,0.18); border: 2.5px solid var(--accent-gold, #f59e0b);">
+          <img id="gift-reveal-img" src="assets/images/whatsapp-surprise-gift.jpeg" alt="مفاجأة الهدية" style="width: 100%; height: auto; max-height: 400px; object-fit: contain; display: block;">
+        </div>
+        <div class="gift-surprise-caption" style="margin-top: 18px; text-align: center;">
           <h3 style="font-size: 1.45rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.4rem;">توقعي ديه يه 😉</h3>
           <p style="font-size: 1.2rem; font-weight: 700; color: #ec4899; margin: 0;">حاجة جوه حاجة جوه حاجة جوه حاجة</p>
         </div>

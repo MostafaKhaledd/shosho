@@ -12,7 +12,7 @@ globalScope.SIBLING_GIFT_CONFIG = {
   // 1. المعلومات العامة والأسماء
   // ----------------------------------------------------------------------------
   recipientName: "شوشو",                      // اسم أختك الغالية
-  senderName: "أخوكي",                        // صفة المُهدي
+  senderName: "",                             // صفة المُهدي
   relationshipBadge: "أحلى وأغلى أخت في الكون 🏆",
   secretPassword: "Suss",                    // كلمة السر للدخول
   passwordHint: "💡 تلميح: جربي 'Suss' (الكلمة السرية بتاعتنا!)",
@@ -23,6 +23,8 @@ globalScope.SIBLING_GIFT_CONFIG = {
   envelopeText: "رسالة خاصة لأغلى أخت في الدنيا ✉️",
   envelopeInstruction: "دوسي على الظرف لفتحه 💌",
   prePasswordMessage: "مش عارف هتكون ردة فعلك إيه... بس جمعتلك أحلى صورنا ومواقفنا وذكرياتنا سوا في مكان واحد بمناسبة عيد ميلادك. جاهزة تفتحي الصندوق؟",
+  welcomeBadge: "🎂 كل سنة وانت طيبة يا حببتي",
+  welcomeTitle: "ان شاءالله الهدية تعجبك 🙂↔️",
   welcomeMessage: "كل حاجة هنا مننا ولينا... تفاصيل ومواقف صغيرة وضحكات يمكن ماتعرفيش إني لسه فاكرها كلها. كل سنة وإنتي طيبة وعقبال مليون سنة سعادة ونجاح! 🎂✨",
 
   // ----------------------------------------------------------------------------
@@ -177,3 +179,7 @@ globalScope.SIBLING_GIFT_CONFIG = {
     }
   ]
 };
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = globalScope.SIBLING_GIFT_CONFIG;
+}
